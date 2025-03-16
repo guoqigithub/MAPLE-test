@@ -24,7 +24,7 @@ loc = "/home/guoqi/P3D/MAPLE-V2/"
 
 #set box geometry
 
-bs =  512#box size in Mpc/h
+bs =  320#box size in Mpc/h
 nc =  128#number of pixels per side
 
 ptcl_grid_shape = (nc,) * 3
