@@ -1,8 +1,8 @@
 import configparser
 
-### Notebook for P3D stuff!
-
 import jax
+
+#GPU is probably also fine, fwiw
 jax.config.update('jax_platform_name', 'cpu')
 from jax.lib import xla_bridge
 
@@ -19,8 +19,8 @@ from helper_functions import *
 z= 2.0
 
 #file name
-prefix = "A_DESI_TEST512_"
-loc = "/home/guoqi/P3D/MAPLE-P3D/config/"
+prefix = "V1_DENSE_"
+loc = "./configs/"
 
 #set box geometry
 
@@ -32,7 +32,7 @@ ptcl_spacing = bs/nc
 
 #survey geometry for mock catalog
 
-n_skewers = int() #factor of 33 to go from PFS to DESI
+n_skewers = int(7993) #factor of 33 to go from PFS to DESI
 include_dla = True
 model_dla = True
 snr = 2 #will draw from a distribution eventually...
@@ -87,7 +87,8 @@ pos = np.vstack([xx,yy])
 skewers_pos = []
 
 #random length of skewer
-leo_skew = np.array(np.random.rand(n_skewers)*bs,dtype=int)
+#leo_skew = np.array(np.random.rand(n_skewers)*bs,dtype=int)
+leo_skew = np.array(np.ones(n_skewers)*bs,dtype=int)
 
 #S/N per skewer..
 
@@ -100,7 +101,7 @@ def gen_noise(n_skewers,snr_min,snr_max,alpha = 2.8,):
         skewers_noise = (1.0/snr[:,numpy.newaxis])
         return skewers_noise
 
-skn = gen_noise(n_skewers,2,10)
+skn = gen_noise(n_skewers,2,2.5)
 
 #we'll mask the DLA in noise, as opposed to removing them in the data
 
@@ -113,7 +114,7 @@ skewers_index = []
 for nn,i in enumerate(pos.T):
     zzz = zz.reshape(1,-1).T[:leo_skew[nn],:]
     dla_mask = np.zeros(leo_skew[nn])
-    if np.random.rand()<0.1:
+    if np.random.rand()<0.0:
         if len(zzz)<50:
             print("not masked due to too short")
         else:
