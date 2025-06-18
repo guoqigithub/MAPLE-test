@@ -52,6 +52,7 @@ def generate_default_config():
         
         'fisher': {
             'n_sims_fisher': 20,
+            'n_sims_hessian': 20,
             'implicit_diff_cgtol': 1e-3,
             'finite_diff_step': None,  # Will be computed automatically
             'use_median': False

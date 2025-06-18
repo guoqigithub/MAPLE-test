@@ -4,6 +4,7 @@ Handles loading of observation data and simulation data
 """
 
 import numpy as np
+import os
 import jax.numpy as jnp
 from pathlib import Path
 
@@ -87,8 +88,12 @@ def prepare_lya_map(sim_data, obs_data, config):
     noise_level = config['optimization']['noise_level']
     
     if skewers_skn is not None:
-        noise = (noise_level * skewers_skn) * jax.random.normal(keys[1], (kernel.shape[1],))
-        map_lya_sim += noise
+        if os.path.exists("../map_lya_sim.npy"):
+            print("load existing lya map")
+            map_lya_sim = np.load("../map_lya_sim.npy")
+        else:
+            noise = (noise_level * skewers_skn) * jax.random.normal(keys[1], (kernel.shape[1],))
+            map_lya_sim += noise
     
     return {
         'map_lya_sim': map_lya_sim,

@@ -213,7 +213,7 @@ def create_muse_problem(power_data, data_loaders, config):
         lya_data=lya_data,
         config=config,
         implicit_diff=True,
-        jit=True
+        jit=False
     )
     
     return problem

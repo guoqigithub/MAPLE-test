@@ -769,7 +769,7 @@ def run_full_analysis(problem, config, x_data, start_point, rng):
         θ=θ_final,
         s_MAP_sims=s_MAP_sims,
         rng=subkey,
-        nsims=config.get('covariance_nsims', 20)
+        nsims=config.get('fisher', {}).get('n_sims_fisher', 20)
     )
     
     # Compute Fisher matrix
@@ -778,7 +778,7 @@ def run_full_analysis(problem, config, x_data, start_point, rng):
         θ=θ_final,
         z_MAP_sims=z_MAP_sims,
         rng=subkey,
-        nsims=config.get('fisher_nsims', 20)
+        nsims=config.get('fisher', {}).get('n_sims_hessian', 20)
     )
     
     # Final covariance
@@ -793,6 +793,8 @@ def run_full_analysis(problem, config, x_data, start_point, rng):
     
     # Compile final results
     results = {
+        "start_point": start_point,
+        "θ_fiducial": problem.get_fiducial_parameters(),
         "θ_final": θ_final,
         "covariance_results": cov_results,
         "optimization_results": opt_results,
